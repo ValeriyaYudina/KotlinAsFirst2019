@@ -60,6 +60,7 @@ fun main() {
  * Рассчитать время в секундах, прошедшее с начала суток (30035 в данном случае).
  */
 fun seconds(hours: Int, minutes: Int, seconds: Int): Int = seconds + (minutes * 60) + (hours * 60 * 60)
+
 /**
  * Тривиальная
  *
@@ -67,7 +68,8 @@ fun seconds(hours: Int, minutes: Int, seconds: Int): Int = seconds + (minutes * 
  * Определить длину того же отрезка в метрах (в данном случае 18.98).
  * 1 сажень = 3 аршина = 48 вершков, 1 вершок = 4.445 см.
  */
-fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double = (((sagenes * 3 * 16) + (arshins * 16) + vershoks) * 4.445) / 100.0
+fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double =
+    (((sagenes * 3 * 16) + (arshins * 16) + vershoks) * 4.445) / 100.0
 
 /**
  * Тривиальная
@@ -86,7 +88,6 @@ fun angleInRadian(deg: Int, min: Int, sec: Int): Double = (deg + (min + sec / 60
 fun trackLength(x1: Double, y1: Double, x2: Double, y2: Double): Double =
     sqrt((sqr(max(x1, x2) - min(x1, x2)) + (sqr(max(y1, y2) - min(y1, y2)))))
 
-
 /**
  * Простая
  *
@@ -104,6 +105,7 @@ fun thirdDigit(number: Int): Int = (number / 100) % 10
  */
 fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minutesArrive: Int): Int =
     (hoursArrive * 60 + minutesArrive) - (hoursDepart * 60 + minutesDepart)
+
 /**
  * Простая
  *
@@ -114,7 +116,6 @@ fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minute
 fun accountInThreeYears(initial: Int, percent: Int): Double = (initial + initial * (percent / 100.0)) +
         (initial + initial * (percent / 100.0)) * (percent / 100.0) + ((initial + initial * (percent / 100.0)) +
         (initial + initial * (percent / 100.0)) * (percent / 100.0)) * (percent / 100.0)
-
 
 /**
  * Простая
