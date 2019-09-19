@@ -84,7 +84,7 @@ fun angleInRadian(deg: Int, min: Int, sec: Int): Double = (deg + (min + sec / 60
  * Например, расстояние между (3, 0) и (0, 4) равно 5
  */
 fun trackLength(x1: Double, y1: Double, x2: Double, y2: Double): Double =
-    sqrt((sqr(max(x1, x2) - min(x1, x2) ) + (sqr(max(y1, y2) - min(y1, y2)))))
+    sqrt((sqr(max(x1, x2) - min(x1, x2)) + (sqr(max(y1, y2) - min(y1, y2)))))
 
 
 /**
