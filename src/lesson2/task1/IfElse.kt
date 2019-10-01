@@ -15,7 +15,7 @@ import kotlin.math.sqrt
  */
 fun quadraticRootNumber(a: Double, b: Double, c: Double): Int {
     val discriminant = discriminant(a, b, c)
-    return when {
+    return when  {
         discriminant > 0.0 -> 2
         discriminant == 0.0 -> 1
         else -> 0
