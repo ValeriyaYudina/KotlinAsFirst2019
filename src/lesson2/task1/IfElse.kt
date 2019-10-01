@@ -15,7 +15,7 @@ import kotlin.math.sqrt
  */
 fun quadraticRootNumber(a: Double, b: Double, c: Double): Int {
     val discriminant = discriminant(a, b, c)
-    return when  {
+    return when {
         discriminant > 0.0 -> 2
         discriminant == 0.0 -> 1
         else -> 0
@@ -155,11 +155,10 @@ fun triangleKind(a: Double, b: Double, c: Double): Int = when {
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = when {
-    (b > d) && (a > c) && (d > a) -> abs(d - a)
-    (c > a) && (b > d) && (d > a) -> abs(d - c)
-    (c > a) && (d > b) && (b > c) -> abs(b - c)
-    ((a > c) && (d > b) && (b > a)) || ((a == c) && (b == d)) -> abs(b - a)
-    ((a < c) && (d > b) && (b != c)) || ((a > c) && (b > d) && (a != d)) -> -1
-    else -> 0
+    (b >= d) && (a >= c) && (d >= a) -> abs(d - a)
+    (c >= a) && (b >= d) && (d >= a) -> abs(d - c)
+    (c >= a) && (d >= b) && (b >= c) -> abs(b - c)
+    ((a >= c) && (d >= b) && (b >= a)) -> abs(b - a)
+    else -> -1
 }
 
