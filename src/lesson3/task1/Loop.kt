@@ -2,6 +2,8 @@
 
 package lesson3.task1
 
+import lesson1.task1.sqr
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 /**
@@ -12,7 +14,7 @@ import kotlin.math.sqrt
 fun factorial(n: Int): Double {
     var result = 1.0
     for (i in 1..n) {
-        result = result * i // Please do not fix in master
+        result *= i // Please do not fix in master
     }
     return result
 }
@@ -67,7 +69,15 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun digitNumber(n: Int): Int = TODO()
+fun digitNumber(n: Int): Int {
+    var r = 0
+    var p = n
+    do {
+        p /= 10
+        r++
+    } while (p > 0)
+    return r
+}
 
 /**
  * Простая
@@ -75,7 +85,21 @@ fun digitNumber(n: Int): Int = TODO()
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int = TODO()
+fun fib(n: Int): Int {
+    var a = 1
+    var b = 1
+    var i = 1
+    var c = 0
+    if (n == 1) return 1
+    if (n == 2) return 1
+    while (i <= n - 3) {
+        c = b
+        b += a
+        a = c
+        i++
+    }
+return a + b
+}
 
 /**
  * Простая
@@ -196,7 +220,29 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun getNumber(a: Int, n: Int): Int{
+    var m: Int = n
+    var b: Int = a
+    while (m != 0){
+        m--
+        b /= 10
+    }
+    return b % 10
+}
+
+fun findDigit(n: Int, f: (Int) -> Int): Int {
+    var temp: Int = 0
+    var i: Int = 1
+    var s: Int = 0
+    while (s < n){
+        temp = f(i)
+        s += digitNumber(temp)
+        i++
+    }
+    return getNumber(temp, s - n)
+}
+
+fun squareSequenceDigit(n: Int): Int = findDigit(n, ::sqr)
 
 /**
  * Сложная
@@ -207,4 +253,4 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int = findDigit(n, ::fib)

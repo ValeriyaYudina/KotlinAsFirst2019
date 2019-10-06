@@ -91,7 +91,7 @@ fun factorial(n: Int): Double {
     // Мутирующая переменная (var)
     var result = 1.0
     for (i in 1..n) {
-        result *= i
+         result *= i
     }
     return result
 }
@@ -304,7 +304,7 @@ fun digitCountInNumber(n: Int, m: Int): Int {
         if (m == number % 10) {
             count++
         }
-        number /= 10
+                number /= 10
     } while (number > 0)
     return count
 }
