@@ -3,7 +3,6 @@
 package lesson3.task1
 
 import lesson1.task1.sqr
-import kotlin.math.pow
 import kotlin.math.sqrt
 
 /**
@@ -224,7 +223,7 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  * Использовать операции со строками в этой задаче запрещается.
  */
 
-fun getNumber(a: Int, n: Int): Int{
+fun getNumber(a: Int, n: Int): Int {
     var m = n
     var b = a
     while (m != 0) {
