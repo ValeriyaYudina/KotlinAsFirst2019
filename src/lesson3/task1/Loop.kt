@@ -72,6 +72,8 @@ fun digitCountInNumber(n: Int, m: Int): Int =
 fun digitNumber(n: Int): Int {
     var r = 0
     var p = n
+    if (p < 0)
+        p = -p
     do {
         p /= 10
         r++
@@ -99,6 +101,7 @@ fun fib(n: Int): Int {
         i++
     }
 return a + b
+
 }
 
 /**
@@ -220,10 +223,11 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
+
 fun getNumber(a: Int, n: Int): Int{
-    var m: Int = n
-    var b: Int = a
-    while (m != 0){
+    var m = n
+    var b = a
+    while (m != 0) {
         m--
         b /= 10
     }
@@ -231,10 +235,10 @@ fun getNumber(a: Int, n: Int): Int{
 }
 
 fun findDigit(n: Int, f: (Int) -> Int): Int {
-    var temp: Int = 0
-    var i: Int = 1
-    var s: Int = 0
-    while (s < n){
+    var temp = 0
+    var i = 1
+    var s = 0
+    while (s < n) {
         temp = f(i)
         s += digitNumber(temp)
         i++
