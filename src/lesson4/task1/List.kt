@@ -224,6 +224,7 @@ fun convert(n: Int, base: Int): List<Int> {
     while (p != 0) {
         list.add(p % base)
         p /= base
+
     }
     return list.reversed()
 }
