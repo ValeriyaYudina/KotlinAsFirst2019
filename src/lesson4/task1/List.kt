@@ -3,6 +3,8 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import lesson1.task1.sqr
+import lesson3.task1.digitNumber
 import kotlin.math.sqrt
 
 /**
@@ -115,14 +117,14 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * по формуле abs = sqrt(a1^2 + a2^2 + ... + aN^2).
  * Модуль пустого вектора считать равным 0.0.
  */
-fun abs(v: List<Double>): Double = TODO()
+fun abs(v: List<Double>): Double = sqrt(v.sumByDouble { it * it })
 
 /**
  * Простая
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double = TODO()
+fun mean(list: List<Double>): Double = list.average()
 
 /**
  * Средняя
@@ -132,7 +134,11 @@ fun mean(list: List<Double>): Double = TODO()
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun center(list: MutableList<Double>): MutableList<Double> = TODO()
+fun center(list: MutableList<Double>): MutableList<Double> {
+    val a = mean(list)
+    list.replaceAll { it - a }
+    return list
+}
 
 /**
  * Средняя
@@ -141,7 +147,7 @@ fun center(list: MutableList<Double>): MutableList<Double> = TODO()
  * представленные в виде списков a и b. Скалярное произведение считать по формуле:
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.
  */
-fun times(a: List<Int>, b: List<Int>): Int = TODO()
+fun times(a: List<Int>, b: List<Int>): Int = a.zip(b).sumBy { it.first * it.second }
 
 /**
  * Средняя
@@ -163,7 +169,10 @@ fun polynom(p: List<Int>, x: Int): Int = TODO()
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun accumulate(list: MutableList<Int>): MutableList<Int> = TODO()
+fun accumulate(list: MutableList<Int>): MutableList<Int> {
+    for (i in 1 until list.size) list[i] += list[i - 1]
+    return list
+}
 
 /**
  * Средняя
@@ -172,7 +181,26 @@ fun accumulate(list: MutableList<Int>): MutableList<Int> = TODO()
  * Результат разложения вернуть в виде списка множителей, например 75 -> (3, 5, 5).
  * Множители в списке должны располагаться по возрастанию.
  */
-fun factorize(n: Int): List<Int> = TODO()
+
+fun factorize(n: Int): List<Int> {
+    val list = mutableListOf<Int>()
+    val i = 1
+    var p = n
+    while (p != i) {
+        if (p == 2) {
+            list.add(2)
+            p = i
+        }
+        for (i in 2..p) {
+            if (p % i == 0) {
+                list.add(i)
+                p /= i
+                break
+            }
+        }
+    }
+    return list
+}
 
 /**
  * Сложная
@@ -181,7 +209,7 @@ fun factorize(n: Int): List<Int> = TODO()
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  * Множители в результирующей строке должны располагаться по возрастанию.
  */
-fun factorizeToString(n: Int): String = TODO()
+fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*")
 
 /**
  * Средняя
@@ -190,7 +218,15 @@ fun factorizeToString(n: Int): String = TODO()
  * Результат перевода вернуть в виде списка цифр в base-ичной системе от старшей к младшей,
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
-fun convert(n: Int, base: Int): List<Int> = TODO()
+fun convert(n: Int, base: Int): List<Int> {
+    val list = mutableListOf<Int>()
+    var p = n
+    while (p != 0) {
+        list.add(p % base)
+        p /= base
+    }
+    return list.reversed()
+}
 
 /**
  * Сложная
@@ -245,4 +281,124 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+
+fun russian(n: Int): String {
+    var p = n
+    var i = 0
+    var r = mutableListOf<String>()
+    var s = mutableListOf<Int>()
+    while (p != 0) {
+        s.add(p % 10)
+        p /= 10
+    }
+    s.add(0)
+
+    for (i in 0..(digitNumber(n) - 1)) {
+        when (i) {
+            0 -> if (s[1] != 1) {
+                when (s[i]) {
+                    1 -> r.add("один")
+                    2 -> r.add("два")
+                    3 -> r.add("три")
+                    4 -> r.add("четыре")
+                    5 -> r.add("пять")
+                    6 -> r.add("шесть")
+                    7 -> r.add("cемь")
+                    8 -> r.add("восемь")
+                    9 -> r.add("девять")
+                }
+            }
+            1 -> when (s[i]) {
+                1 -> when (s[0]) {
+                    0 -> r.add("десять")
+                    1 -> r.add("одиннадцать")
+                    2 -> r.add("двенадцать")
+                    3 -> r.add("тринадцать")
+                    4 -> r.add("четырнадцать")
+                    5 -> r.add("пятнадцать")
+                    6 -> r.add("шестнадцать")
+                    7 -> r.add("cемнадцать")
+                    8 -> r.add("восемнадцать")
+                    9 -> r.add("девятнадцать")
+                }
+
+                2 -> r.add("двадцать")
+
+                3 -> r.add("тридцать")
+                4 -> r.add("сорок")
+                5 -> r.add("пятьдесят")
+                6 -> r.add("шестьдесят")
+                7 -> r.add("семьдесят")
+                8 -> r.add("восемьдесят")
+                9 -> r.add("девяносто")
+
+            }
+            2 -> when (s[i]) {
+                1 -> r.add("сто")
+                2 -> r.add("двести")
+                3 -> r.add("триста")
+                4 -> r.add("четыреста")
+                5 -> r.add("пятьсот")
+                6 -> r.add("шестьсот")
+                7 -> r.add("семьсот")
+                8 -> r.add("восемьсот")
+                9 -> r.add("девятьсот")
+
+            }
+            3 -> if (s[4] != 1) when (s[i]) {
+                0 -> r.add("тысяч")
+                1 -> r.add("одна тысяча")
+                2 -> r.add("две тысячи")
+                3 -> r.add("три тысячи")
+                4 -> r.add("четыре тысячи")
+                5 -> r.add("пять тысяч")
+                6 -> r.add("шесть тысяч")
+                7 -> r.add("семь тысяч")
+                8 -> r.add("восемь тысяч")
+                9 -> r.add("девять тысяч")
+            }
+
+            4 -> when (s[i]) {
+                1 -> when (s[3]) {
+                    0 -> r.add("десять тысяч")
+                    1 -> r.add("одиннадцать тысяч")
+                    2 -> r.add("двенадцать тысяч")
+                    3 -> r.add("тринадцать тысяч")
+                    4 -> r.add("четырнадцать тысяч")
+                    5 -> r.add("пятнадцать тысяч")
+                    6 -> r.add("шестнадцать тысяч")
+                    7 -> r.add("cемнадцать тысяч")
+                    8 -> r.add("восемнадцать тысяч")
+                    9 -> r.add("девятнадцать тысяч")
+                }
+
+                2 -> r.add("двадцать")
+                3 -> r.add("тридцать")
+                4 -> r.add("сорок")
+                5 -> r.add("пятьдесят")
+                6 -> r.add("шестьдесят")
+                7 -> r.add("семьдесят")
+                8 -> r.add("восемьдесят")
+                9 -> r.add("девяносто")
+
+            }
+            5 -> when (s[i]) {
+                1 -> r.add("сто")
+                2 -> r.add("двести")
+                3 -> r.add("триста")
+                4 -> r.add("четыреста")
+                5 -> r.add("пятьсот")
+                6 -> r.add("шестьсот")
+                7 -> r.add("семьсот")
+                8 -> r.add("восемьсот")
+                9 -> r.add("девятьсот")
+
+            }
+
+        }
+    }
+    r.reverse()
+    return r.joinToString(separator = " ")
+}
+
+
