@@ -293,7 +293,7 @@ fun russian(n: Int): String {
     }
     s.add(0)
 
-    for (i in 0..(digitNumber(n) - 1)) {
+    for (i in 0 until digitNumber(n)) {
         when (i) {
             0 -> if (s[1] != 1) {
                 when (s[i]) {
