@@ -224,7 +224,6 @@ fun convert(n: Int, base: Int): List<Int> {
     while (p != 0) {
         list.add(p % base)
         p /= base
-
     }
     return list.reversed()
 }
@@ -286,8 +285,8 @@ fun roman(n: Int): String = TODO()
 fun russian(n: Int): String {
     var p = n
     var i = 0
-    var r = mutableListOf<String>()
-    var s = mutableListOf<Int>()
+    val r = mutableListOf<String>()
+    val s = mutableListOf<Int>()
     while (p != 0) {
         s.add(p % 10)
         p /= 10
