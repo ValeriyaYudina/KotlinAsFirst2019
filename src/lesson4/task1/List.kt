@@ -21,7 +21,6 @@ fun sqRoots(y: Double) =
             // Результат!
             listOf(-root, root)
         }
-
     }
 
 /**
