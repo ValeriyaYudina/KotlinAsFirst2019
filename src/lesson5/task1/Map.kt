@@ -13,6 +13,7 @@ fun shoppingListCost(
     shoppingList: List<String>,
     costs: Map<String, Double>
 ): Double {
+
     var totalCost = 0.0
 
     for (item in shoppingList) {
@@ -91,21 +92,7 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  *   buildGrades(mapOf("Марат" to 3, "Семён" to 5, "Михаил" to 5))
  *     -> mapOf(5 to listOf("Семён", "Михаил"), 3 to listOf("Марат"))
  */
-fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
-    val m = mutableMapOf<Int, MutableList<String>>()
-    val l = mutableListOf<String>()
-    for ((name, att) in grades) {
-        if (!m.containsKey(att)) {
-            for ((name1, att1) in grades)
-                if (att1 == att) {
-                    l.add(name1)
-                }
-            m[att] = l
-        }
-        l.clear()
-    }
-    return m
-}
+fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
 
 /**
  * Простая
