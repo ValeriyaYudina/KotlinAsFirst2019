@@ -312,6 +312,7 @@ fun hasAnagrams(words: List<String>): Boolean {
                     return true
                 }
             }
+            if ((s1 == "") && (s == "")) return true
             i2++
         }
         i1++
