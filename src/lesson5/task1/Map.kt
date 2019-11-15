@@ -105,8 +105,8 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
 fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
-    for ((x,y) in a)
-        if ((b[x] == null)||(b[x] != y))
+    for ((x, y) in a)
+        if ((b[x] == null) || (b[x] != y))
             return false
     return true
 }
@@ -126,8 +126,8 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
  *     -> a changes to mutableMapOf() aka becomes empty
  */
 fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit {
-    for ((x,y) in b)
-        if ((a[x] != null)&&(a[x] == y))
+    for ((x, y) in b)
+        if ((a[x] != null) && (a[x] == y))
             a.remove(x)
 }
 
@@ -138,18 +138,18 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit {
  * В выходном списке не должно быть повторяюихся элементов,
  * т. е. whoAreInBoth(listOf("Марат", "Семён, "Марат"), listOf("Марат", "Марат")) == listOf("Марат")
  */
-fun contains(a: MutableList<String>, n: String): Boolean{
+fun contains(a: MutableList<String>, n: String): Boolean {
     for (name in a)
-        if(name == n)
+        if (name == n)
             return true
     return false
 }
 
 fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
     val ans = mutableListOf<String>()
-    for (n1 in a){
-        for (n2 in b){
-            if ((n1 == n2)&&(!contains(ans,n1))){
+    for (n1 in a) {
+        for (n2 in b) {
+            if ((n1 == n2) && (!contains(ans, n1))) {
                 ans.add(n1)
             }
         }
@@ -177,14 +177,13 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
 fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
     val ans = mutableMapOf<String, String>()
     var str: String
-    for ((x,y) in mapA){
-        if ((mapB[x] != null)&&(mapB[x] != y)){
+    for ((x, y) in mapA) {
+        if ((mapB[x] != null) && (mapB[x] != y)) {
             str = y + ", " + mapB[x]
-        }
-        else str = y
+        } else str = y
         ans[x] = str
     }
-    for ((x,y) in mapB){
+    for ((x, y) in mapB) {
         if (ans[x] == null)
             ans[x] = y
     }
@@ -204,10 +203,9 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
 fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
     val s = mutableListOf<Double>()
     val ans = mutableMapOf<String, Double>()
-    for ((x,y) in stockPrices){
-        s.add(y)
-        for ((x1,y1) in stockPrices){
-            if((x == x1)&&(y != y1)){
+    for ((x, y) in stockPrices) {
+        for ((x1, y1) in stockPrices) {
+            if (x == x1) {
                 s.add(y1)
             }
         }
@@ -243,7 +241,9 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun containsChar(chars: List<Char>, c: Char): Boolean{
+fun containsChar(chars: List<Char>, c: Char): Boolean {
+    c.toLowerCase()
+    for (lc in chars) lc.toLowerCase()
     for (lc in chars)
         if (lc == c)
             return true
@@ -252,7 +252,7 @@ fun containsChar(chars: List<Char>, c: Char): Boolean{
 
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
     for (i in 0 until word.length)
-        if (!containsChar(chars,word[i]))
+        if (!containsChar(chars, word[i]))
             return false
     return true
 }
@@ -272,7 +272,7 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
 fun extractRepeats(list: List<String>): Map<String, Int> {
     var r = 0
     val ans = mutableMapOf<String, Int>()
-    for (c in list){
+    for (c in list) {
         for (cc in list)
             if (c == cc)
                 r++
@@ -294,23 +294,27 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
  */
 fun hasAnagrams(words: List<String>): Boolean {
     val l = mutableListOf<Char>()
+    var i1 = 0
+    var i2 = 0
     var flag = true
-    for (s in words){
-        for (s1 in words){
-            if((s != s1)&&(s.length == s1.length)){
-                for (i in 0 until s.length){
+    for (s in words) {
+        for (s1 in words) {
+            if ((i1 != i2) && (s.length == s1.length) && (s != "") && (s1 != "")) {
+                for (i in 0 until s.length) {
                     l.add(s[i])
                 }
-                for (i in 0 until s1.length){
-                    if(!containsChar(l,s1[i])){
+                for (i in 0 until s1.length) {
+                    if (!containsChar(l, s1[i])) {
                         flag = false
                     }
                 }
-                if (flag){
+                if (flag) {
                     return true
                 }
             }
+            i2++
         }
+        i1++
     }
     return false
 }
