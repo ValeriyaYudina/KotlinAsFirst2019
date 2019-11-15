@@ -10,7 +10,7 @@ import kotlin.math.sqrt
 /**
  * Пример
  *
- * Найти все корни уравнения x^2 = y
+ * Найти все корни  уравнения x^2 = y
  */
 fun sqRoots(y: Double) =
     when {
