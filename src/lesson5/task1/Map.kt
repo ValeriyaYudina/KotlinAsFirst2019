@@ -299,7 +299,7 @@ fun hasAnagrams(words: List<String>): Boolean {
     var flag = true
     for (s in words) {
         for (s1 in words) {
-            if ((i1 != i2) && (s.length == s1.length))) {
+            if ((i1 != i2) && (s.length == s1.length)) {
                 for (i in 0 until s.length) {
                     l.add(s[i])
                 }
@@ -311,10 +311,12 @@ fun hasAnagrams(words: List<String>): Boolean {
                 if (flag) {
                     return true
                 }
+                if ((i1 != i2) && (s == s1)) return true
+
             }
-            if ((i1 != i2) && (s == s1)) return true
             i2++
         }
+        i2 = 0
         i1++
     }
     return false
