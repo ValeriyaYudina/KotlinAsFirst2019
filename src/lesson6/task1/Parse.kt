@@ -2,6 +2,13 @@
 
 package lesson6.task1
 
+import lesson3.task1.digitNumber
+import lesson5.task1.containsChar
+import ru.spbstu.kotlin.generate.assume.retry
+import java.io.File.separator
+import java.lang.NumberFormatException
+import kotlin.math.max
+
 /**
  * Пример
  *
@@ -97,7 +104,14 @@ fun dateDigitToStr(digital: String): String = TODO()
  *
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+
+fun flattenPhoneNumber(phone: String): String {
+    var k = ""
+    val sh = Regex("""(\+\d+)?(\(\d+\))?\d+""")
+    k = phone.filter { (it != ' ') && (it != '-') }
+    if (k.matches(sh)) return k.filter { (it != '(') && (it != ')') }
+    else return ""
+}
 
 /**
  * Средняя
@@ -109,7 +123,24 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+
+fun bestLongJump(jumps: String): Int {
+    var i = 0
+    var k = ""
+    var g: Long
+    var max = -1
+    val sh = Regex("""(\d\d\d)+""")
+    k = jumps.filter { (it != '-') && (it != '%') && (it != ' ') }
+    if (k.matches(sh)) {
+        g = k.toLong()
+        while (g > 0) {
+            if (((g % 1000).toInt()) > max) max = (g % 1000).toInt()
+            g /= 1000
+        }
+
+    } else return -1
+    return max
+}
 
 /**
  * Сложная
@@ -122,7 +153,16 @@ fun bestLongJump(jumps: String): Int = TODO()
  * При нарушении формата входной строки, а также в случае отсутствия удачных попыток,
  * вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
+fun bestHighJump(jumps: String): Int {
+    val sh = Regex("""(\d\d\d\+)""")
+    var max = -1
+    val k = jumps.filter { (it != '%') && (it != '-') && (it != ' ') }
+    val m = sh.findAll(k)
+    m.forEach { f ->
+        if ((f.value.filter { it != '+' }).toInt() > max) max = (f.value.filter { it != '+' }).toInt()
+    }
+    return max
+}
 
 /**
  * Сложная
@@ -208,4 +248,52 @@ fun fromRoman(roman: String): Int = TODO()
  * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
  *
  */
-fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+fun kav(commands: String, index: Int): Int {
+    var c = 0
+    var i = index
+    while (i < commands.length) {
+        if (commands[i] == '[') c++
+        if (commands[i] == ']') c--
+        if (c == 0) return i
+        i++
+    }
+    return -1
+}
+
+fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
+    var index = 0
+    var indopenk = mutableListOf<Int>()
+    var kolvoopenk: Int = 0
+    var lastkav: Int = -1
+    var pointer = 0
+    var s = mutableListOf<Int>()
+    for (pointer in 0 until cells)
+        s.add(0)
+    pointer = cells / 2
+    while ((index <= limit) && (index < commands.length)) {
+        when (commands[index]) {
+            '>' -> if (pointer < (cells - 1)) pointer++ else throw  IllegalStateException()
+            '<' -> if (pointer > 0) pointer-- else throw  IllegalStateException()
+            '+' -> s[pointer]++
+            '-' -> s[pointer]--
+            '[' -> {
+                kolvoopenk++
+                if (s[pointer] != 0) {
+                    indopenk.add(index)
+                    lastkav = index
+                } else index = kav(commands, index)
+            }
+            ']' -> {
+                kolvoopenk--
+                if (s[pointer] != 0) {
+                    if (lastkav == -1) throw  IllegalArgumentException()
+                    index = indopenk[kolvoopenk] - 1
+                }
+            }
+            else -> if (commands[index] != ' ') throw  IllegalArgumentException()
+        }
+        index++
+    }
+    if (kolvoopenk != 0) throw IllegalArgumentException()
+    return s
+}
