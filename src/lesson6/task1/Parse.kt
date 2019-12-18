@@ -259,6 +259,7 @@ fun check(s: String): Boolean {
     for (c in s) {
         if (c == '[') a++
         if (c == ']') b++
+        if (b > a) throw IllegalArgumentException()
     }
     return (a == b)
 }

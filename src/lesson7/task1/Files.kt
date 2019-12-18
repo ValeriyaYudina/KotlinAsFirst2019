@@ -54,17 +54,7 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
  *
  */
-fun countMatches(substr: String, text: String): Int {
-    return (text.length - text.replace(substr, "").length) / substr.length
-}
-
-fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
-    val text = File(inputName).readText()
-    var result = mutableMapOf<String, Int>()
-    for (string in substrings) result[string] = countMatches(string.toLowerCase(), text.toLowerCase())
-    return result
-}
-
+fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> = TODO()
 
 /**
  * Средняя
@@ -322,21 +312,7 @@ fun alignFileByWidth(inputName: String, outputName: String) {
  * Ключи в ассоциативном массиве должны быть в нижнем регистре.
  *
  */
-fun top20Words(inputName: String): Map<String, Int> {
-    if (File(inputName).readText().isBlank()) return emptyMap()
-    val pattern = """[^а-яА-ЯёЁ]|\W+""".toRegex()
-    var words = pattern.split(File(inputName).readText())
-    var map = mutableMapOf<String, Int>()
-    for (i in 1 until words.size - 1) {
-        if (map.containsKey(words[i])) map[words[i]] = map[words[i]]!!.plus(1)
-        else map[words[i]] = 1
-    }
-    if (map.size > 20) {
-        map = map.toSortedMap(compareBy { map[it] })
-        while (map.size > 20) map.remove(map.keys.last())
-    }
-    return map
-}
+fun top20Words(inputName: String): Map<String, Int> = TODO()
 
 /**
  * Средняя
