@@ -2,13 +2,6 @@
 
 package lesson6.task1
 
-import lesson3.task1.digitNumber
-import lesson5.task1.containsChar
-import ru.spbstu.kotlin.generate.assume.retry
-import java.io.File.separator
-import java.lang.NumberFormatException
-import kotlin.math.max
-
 /**
  * Пример
  *
@@ -106,10 +99,10 @@ fun dateDigitToStr(digital: String): String = TODO()
  */
 
 fun flattenPhoneNumber(phone: String): String {
-    var k = ""
-    val sh = Regex("""(\+\d+)?(\(\d+\))?\d+""")
-    k = phone.filter { (it != ' ') && (it != '-') }
-    if (k.matches(sh)) return k.filter { (it != '(') && (it != ')') }
+    var sortedphone = ""
+    val template = Regex("""(\+\d+)?(\(\d+\))?\d+""")
+    sortedphone = phone.filter { (it != ' ') && (it != '-') }
+    if (sortedphone.matches(template)) return sortedphone.filter { (it != '(') && (it != ')') }
     else return ""
 }
 
@@ -125,17 +118,16 @@ fun flattenPhoneNumber(phone: String): String {
  */
 
 fun bestLongJump(jumps: String): Int {
-    var i = 0
-    var k = ""
-    var g: Long
+    var sortedjums = ""
+    var lenght: Long
     var max = -1
-    val sh = Regex("""(\d\d\d)+""")
-    k = jumps.filter { (it != '-') && (it != '%') && (it != ' ') }
-    if (k.matches(sh)) {
-        g = k.toLong()
-        while (g > 0) {
-            if (((g % 1000).toInt()) > max) max = (g % 1000).toInt()
-            g /= 1000
+    val template = Regex("""(\d\d\d)+""")
+    sortedjums = jumps.filter { (it != '-') && (it != '%') && (it != ' ') }
+    if (sortedjums.matches(template)) {
+        lenght = sortedjums.toLong()
+        while (lenght > 0) {
+            if (((lenght % 1000).toInt()) > max) max = (lenght % 1000).toInt()
+            lenght /= 1000
         }
 
     } else return -1
@@ -154,10 +146,10 @@ fun bestLongJump(jumps: String): Int {
  * вернуть -1.
  */
 fun bestHighJump(jumps: String): Int {
-    val sh = Regex("""(\d\d\d\+)""")
+    val template = Regex("""(\d\d\d\+)""")
     var max = -1
-    val k = jumps.filter { (it != '%') && (it != '-') && (it != ' ') }
-    val m = sh.findAll(k)
+    val sortedjumps = jumps.filter { (it != '%') && (it != '-') && (it != ' ') }
+    val m = template.findAll(sortedjumps)
     m.forEach { f ->
         if ((f.value.filter { it != '+' }).toInt() > max) max = (f.value.filter { it != '+' }).toInt()
     }
@@ -260,13 +252,26 @@ fun kav(commands: String, index: Int): Int {
     return -1
 }
 
+
+fun check(s: String): Boolean {
+    var a = 0
+    var b = 0
+    for (c in s) {
+        if (c == '[') a++
+        if (c == ']') b++
+    }
+    return (a == b)
+}
+
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
+    if (!check(commands)) throw IllegalArgumentException()
     var index = 0
-    var indopenk = mutableListOf<Int>()
-    var kolvoopenk: Int = 0
-    var lastkav: Int = -1
+    val indexList = mutableListOf<Int>()
+    var openQuoteCounter: Int = 0
+    var lastQuoteIndex: Int = -1
     var pointer = 0
-    var s = mutableListOf<Int>()
+    var counter = 0
+    val s = mutableListOf<Int>()
     for (pointer in 0 until cells)
         s.add(0)
     pointer = cells / 2
@@ -277,23 +282,30 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
             '+' -> s[pointer]++
             '-' -> s[pointer]--
             '[' -> {
-                kolvoopenk++
+                openQuoteCounter++
                 if (s[pointer] != 0) {
-                    indopenk.add(index)
-                    lastkav = index
-                } else index = kav(commands, index)
+                    indexList.add(index)
+                    lastQuoteIndex = index
+
+                } else {
+                    index = kav(commands, index)
+                    openQuoteCounter--
+                }
             }
             ']' -> {
-                kolvoopenk--
+                openQuoteCounter--
                 if (s[pointer] != 0) {
-                    if (lastkav == -1) throw  IllegalArgumentException()
-                    index = indopenk[kolvoopenk] - 1
-                }
+                    if (lastQuoteIndex == -1) throw  IllegalArgumentException()
+                    index = indexList[openQuoteCounter]
+                    openQuoteCounter++
+                } else indexList.removeAt(openQuoteCounter)
             }
             else -> if (commands[index] != ' ') throw  IllegalArgumentException()
         }
+        counter++
+        if (counter == limit) return s
         index++
     }
-    if (kolvoopenk != 0) throw IllegalArgumentException()
+    if (openQuoteCounter != 0) throw IllegalArgumentException()
     return s
 }

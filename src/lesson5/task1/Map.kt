@@ -125,10 +125,11 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
  *   subtractOf(a = mutableMapOf("a" to "z"), mapOf("a" to "z"))
  *     -> a changes to mutableMapOf() aka becomes empty
  */
-fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit {
+fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): MutableMap<String, String> {
     for ((x, y) in b)
         if ((a[x] != null) && (a[x] == y))
             a.remove(x)
+    return a
 }
 
 /**
@@ -138,24 +139,8 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit {
  * В выходном списке не должно быть повторяюихся элементов,
  * т. е. whoAreInBoth(listOf("Марат", "Семён, "Марат"), listOf("Марат", "Марат")) == listOf("Марат")
  */
-fun contains(a: MutableList<String>, n: String): Boolean {
-    for (name in a)
-        if (name == n)
-            return true
-    return false
-}
-
-fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
-    val ans = mutableListOf<String>()
-    for (n1 in a) {
-        for (n2 in b) {
-            if ((n1 == n2) && (!contains(ans, n1))) {
-                ans.add(n1)
-            }
-        }
-    }
-    return ans
-}
+fun whoAreInBoth(a: List<String>, b: List<String>): List<String> =
+    (a.toMutableSet().intersect(b.toMutableSet())).toList()
 
 /**
  * Средняя
@@ -201,18 +186,24 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
 fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
-    val s = mutableListOf<Double>()
-    val ans = mutableMapOf<String, Double>()
-    for ((x, y) in stockPrices) {
-        for ((x1, y1) in stockPrices) {
-            if (x == x1) {
-                s.add(y1)
-            }
+    if (stockPrices.isEmpty()) return emptyMap()
+    val sum = mutableMapOf<String, Double>()
+    val number = mutableMapOf<String, Int>()
+    for (p in stockPrices) {
+        if (sum.contains(p.first)) {
+            sum[p.first] = sum[p.first]!!.plus(p.second)
+            number[p.first] = number[p.first]!!.plus(1)
+        } else {
+            sum[p.first] = p.second
+            number[p.first] = 1
         }
-        ans[x] = s.average()
-        s.clear()
     }
-    return ans
+    for ((key1, value) in sum) {
+        sum[key1] = value.div(number[key1]!!.toDouble())
+
+
+    }
+    return sum.toMap()
 }
 
 /**
@@ -242,10 +233,8 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
 fun containsChar(chars: List<Char>, c: Char): Boolean {
-    c.toLowerCase()
-    for (lc in chars) lc.toLowerCase()
     for (lc in chars)
-        if (lc == c)
+        if (lc.toLowerCase() == c.toLowerCase())
             return true
     return false
 }
@@ -293,31 +282,14 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
 fun hasAnagrams(words: List<String>): Boolean {
-    val l = mutableListOf<Char>()
-    var i1 = 0
-    var i2 = 0
-    var flag = true
-    for (s in words) {
-        for (s1 in words) {
-            if ((i1 != i2) && (s.length == s1.length)) {
-                for (i in 0 until s.length) {
-                    l.add(s[i])
-                }
-                for (i in 0 until s1.length) {
-                    if (!containsChar(l, s1[i])) {
-                        flag = false
-                    }
-                }
-                if (flag) {
-                    return true
-                }
-                if ((i1 != i2) && (s == s1)) return true
+    for (i in 0 until words.size) {
+        for (j in (words.size - 1) downTo 0) {
+            if (i == j) break
+            if ((words[i].toSet() == words[i].toSet().intersect(words[j].toSet())) && (words[j].toSet() ==
+                        words[j].toSet().intersect(words[i].toSet()))) return true
 
-            }
-            i2++
         }
-        i2 = 0
-        i1++
+
     }
     return false
 }
